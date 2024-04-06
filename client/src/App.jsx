@@ -7,11 +7,12 @@ import Profile from './pages/Profile'
 
 import Header from './components/Header'
 import Benefits from './pages/Benefits'
-import Residence from './pages/Residence'
+
 import ContactUs from './pages/ContactUs'
-import Admin from './pages/Admin'
+
 import SignInPage from './pages/SignInPage'
 import Dashboard from './pages/Dashboard'
+import Residential from './pages/Residential'
  
 
 
@@ -27,7 +28,9 @@ export default function App() {
 <Route path="/about" element={<About/>} />
 <Route path="/profile" element={<Profile/>} />
 <Route path="/benefits" element={<Benefits/>} />
-<Route path="/residence" element={<Residence/>} />
+
+<Route path="/residential" element={<Residential/>} />
+
 <Route path="/contact" element={<ContactUs/>} />
 {/* <Route path="/admin" element={<Admin/>} /> */}
 
