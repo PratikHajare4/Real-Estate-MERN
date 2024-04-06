@@ -26,8 +26,8 @@ export default function Header() {
             <Link to="/benefits">
             <li className='hidden sm:inline  hover:text-black'>Benefits</li>
             </Link>
-            <Link to="/residence">
-            <li className='hidden sm:inline  hover:text-black'>Residence</li>
+            <Link to="/residential">
+            <li className='hidden sm:inline  hover:text-black'>Residential</li>
             </Link>
             <Link to="/contact">
             <li className='hidden sm:inline  hover:text-black'>Contact US</li>

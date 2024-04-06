@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Residence() {
+export default function Residential() {
   return (
     <div>
-      Residence
+      Residential 
     </div>
   )
 }
