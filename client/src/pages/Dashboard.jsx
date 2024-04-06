@@ -3,9 +3,7 @@ import React from 'react'
 export default function Dashboard() {
   return (
     <div>
-      Dashboard  
-
-      bol n kahi
+      Komal kissi de n ak 😘
     </div>
   )
 }
