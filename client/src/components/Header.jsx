@@ -8,12 +8,12 @@ export default function Header() {
         <div className=' flex flex-row justify-between items-center max-w-6xl mx-auto p-3 '>
     <Link to="/" >
         <h1 className='font-bold text-sm sm:text-2xl flex flex-wrap'>
-        <span className='text-slate-200'>Hom</span>
-        <span className='text-slate-700'>Assist</span>
+        <span className='text-slate-200 text-2xl'>Hom</span>
+        <span className='text-slate-700 text-2xl'>Assist</span>
         </h1>
     </Link>
         <form className='bg-slate-100 p-3 rounded-lg flex items-center' >
-            <input type="text" placeholder='Search...' className='bg-transparent w-15 sm:w-64 focus:outline-none' />
+            <input type="text" placeholder='Search...' className='bg-transparent w-14 sm:w-64 focus:outline-none' />
             <FaSearch className='text-slate-600   sm:outline-none'/>
         </form>
         <ul className='flex gap-4 text-white'>

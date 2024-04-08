@@ -14,6 +14,7 @@ import SignInPage from './pages/SignInPage'
 import Dashboard from './pages/Dashboard'
 import Residential from './pages/Residential'
 import Commercial from './pages/Commercial'
+import CreateListing from './pages/CreateListing'
  
 
 
@@ -38,6 +39,7 @@ export default function App() {
 <Route path="/admin/login" element={<SignInPage/>} />
 <Route path="/dash" element={<Dashboard/>} />
 <Route path="/commercial" element={<Commercial/>} />
+<Route path="/create-listing" element={<CreateListing/>} />
 
 
 
