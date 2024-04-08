@@ -13,6 +13,7 @@ import ContactUs from './pages/ContactUs'
 import SignInPage from './pages/SignInPage'
 import Dashboard from './pages/Dashboard'
 import Residential from './pages/Residential'
+import Commercial from './pages/Commercial'
  
 
 
@@ -36,6 +37,7 @@ export default function App() {
 
 <Route path="/admin/login" element={<SignInPage/>} />
 <Route path="/dash" element={<Dashboard/>} />
+<Route path="/commercial" element={<Commercial/>} />
 
 
 

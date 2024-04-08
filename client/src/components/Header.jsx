@@ -29,13 +29,14 @@ export default function Header() {
             <Link to="/residential">
             <li className='hidden sm:inline  hover:text-black'>Residential</li>
             </Link>
+            <Link to="/commercial">
+            <li className='hidden sm:inline  hover:text-black'>Commercial</li>
+            </Link>
             <Link to="/contact">
             <li className='hidden sm:inline  hover:text-black'>Contact US</li>
             </Link>
-            {/* <Link to="/sign-up">
-            <li className='hidden sm:inline  hover:text-black'>Sign Up</li>
-            </Link>
-            <Link to="/sign-in">
+           
+            {/* <Link to="/sign-in">
             <li className='hidden sm:inline  hover:text-black'>Sign IN</li>
             </Link> */}
         </ul>
