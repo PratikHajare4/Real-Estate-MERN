@@ -3,6 +3,8 @@ import listingRouter from "./routes/listing.route.js"
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
+import cors from 'cors';
+
 
 
 import dotenv from "dotenv";
@@ -12,11 +14,14 @@ const app = express();
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+  bufferCommands: false, // Disable buffering
 }).then(() => {
   console.log('Connected to MongoDB');
 }).catch((err) => {
@@ -25,14 +30,7 @@ mongoose.connect(process.env.MONGO, {
 
 app.use('/api/listing', listingRouter)
 
-// Admin login endpoint with middleware
-// app.post('/admin/login', adminLoginMiddleware, (req, res) => {
-//   // If the middleware is passed (i.e., login is successful), this handler will be executed
-//   // res.redirect('/dash');
-//   res.json({
-//     "msg": "hello"
-//   })
-// });
+
 
 // Start server
 const PORT = process.env.PORT || 3000;
