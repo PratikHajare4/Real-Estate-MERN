@@ -1,13 +1,12 @@
 
 import listingRouter from "./routes/listing.route.js"
+import userRouter from './routes/user.route.js';
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from 'cors';
-
-
-
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const app = express();
@@ -18,8 +17,8 @@ app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,
   serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
   bufferCommands: false, // Disable buffering
 }).then(() => {
@@ -29,6 +28,7 @@ mongoose.connect(process.env.MONGO, {
 });
 
 app.use('/api/listing', listingRouter)
+app.use('/api/user', userRouter);
 
 
 
