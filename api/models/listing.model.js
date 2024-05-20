@@ -29,7 +29,6 @@ const listingSchema = new mongoose.Schema(
         bedrooms:{
             type: Number,
             required: true,
-
         },
         furnished: {
             type: Boolean,
@@ -51,8 +50,24 @@ const listingSchema = new mongoose.Schema(
             type: Array,
             required: true,
         },
-
-    },{timestamps: true}
+        apartments: {
+            type: String,
+            required: true,
+        },
+        totalArea: {
+            type: String,
+            required: true,
+        },
+        projectRERAID: {
+            type: String,
+            required: true,
+        },
+        possessionDate: {
+            type: String,
+            required: true,
+        }
+    },
+    {timestamps: true}
 )
 
 const Listing = mongoose.model('Listing', listingSchema);
