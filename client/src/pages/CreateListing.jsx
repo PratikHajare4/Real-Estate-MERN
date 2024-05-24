@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
-import { app } from '../firebase';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { storage } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 
 export default function CreateListing() {
     const navigate = useNavigate();
     const [files, setFiles] = useState([]);
+    const [masterPlanFile, setMasterPlanFile] = useState(null);
     const [formData, setFormData] = useState({
         imageUrls: [],
         name: '',
@@ -22,7 +23,14 @@ export default function CreateListing() {
         apartments: '',
         totalArea: '',
         projectRERAID: '',
-        possessionDate: ''
+        possessionDate: '',
+        carpetRange: '',
+        masterPlanUrl: '',
+        amenities: {
+            gym: false,
+            pool: false,
+            park: false
+        }
     });
     const [imageUploadError, setImageUploadError] = useState(false);
     const [uploading, setUploading] = useState(false);
@@ -33,10 +41,7 @@ export default function CreateListing() {
         if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
             setUploading(true);
             setImageUploadError(false);
-            const promises = [];
-            for (let i = 0; i < files.length; i++) {
-                promises.push(storeImage(files[i]));
-            }
+            const promises = files.map(file => storeImage(file));
             Promise.all(promises).then((urls) => {
                 setFormData({ ...formData, imageUrls: formData.imageUrls.concat(urls) });
                 setImageUploadError(false);
@@ -53,7 +58,6 @@ export default function CreateListing() {
 
     const storeImage = async (file) => {
         return new Promise((resolve, reject) => {
-            const storage = getStorage(app);
             const fileName = new Date().getTime() + file.name;
             const storageRef = ref(storage, fileName);
             const uploadTask = uploadBytesResumable(storageRef, file);
@@ -83,20 +87,29 @@ export default function CreateListing() {
     };
 
     const handleChange = (e) => {
-        if (e.target.id === 'sale' || e.target.id === 'rent') {
+        const { id, value, checked, type } = e.target;
+        if (id === 'sale' || id === 'rent') {
             setFormData({
                 ...formData,
-                type: e.target.id
+                type: id
             });
-        } else if (e.target.id === 'parking' || e.target.id === 'furnished' || e.target.id === 'offer') {
+        } else if (id === 'parking' || id === 'furnished' || id === 'offer') {
             setFormData({
                 ...formData,
-                [e.target.id]: e.target.checked
+                [id]: checked
+            });
+        } else if (id in formData.amenities) {
+            setFormData({
+                ...formData,
+                amenities: {
+                    ...formData.amenities,
+                    [id]: checked
+                }
             });
         } else {
             setFormData({
                 ...formData,
-                [e.target.id]: e.target.value
+                [id]: value
             });
         }
     };
@@ -110,13 +123,27 @@ export default function CreateListing() {
                 return setError('Discount price must be lower than regular price');
             setLoading(true);
             setError(false);
+
+            let masterPlanUrl = '';
+            if (masterPlanFile) {
+                const fileName = `masterPlan-${new Date().getTime()}-${masterPlanFile.name}`;
+                const storageRef = ref(storage, fileName);
+                const uploadTask = await uploadBytesResumable(storageRef, masterPlanFile);
+                masterPlanUrl = await getDownloadURL(uploadTask.snapshot.ref);
+            }
+
+            const formDataWithMasterPlan = {
+                ...formData,
+                masterPlanUrl,
+            };
+
             const baseURL = 'http://localhost:3000';
             const res = await fetch(`${baseURL}/api/listing/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(formDataWithMasterPlan),
             });
             const data = await res.json();
             setLoading(false);
@@ -150,6 +177,26 @@ export default function CreateListing() {
                     <input onChange={handleChange} value={formData.projectRERAID} type="text" placeholder='Project RERA ID' className='border border-rose-300 p-3 rounded-lg' id="projectRERAID" required />
                     <p>Possession Date</p>
                     <input onChange={handleChange} value={formData.possessionDate} type="text" placeholder='Possession Date' className='border border-rose-300 p-3 rounded-lg' id="possessionDate" required />
+                    <p>Carpet Range</p>
+                    <input onChange={handleChange} value={formData.carpetRange} type="text" placeholder='Carpet Range' className='border border-rose-300 p-3 rounded-lg' id="carpetRange" required />
+                    <p>Master Plan</p>
+                    <input type="file" accept="image/*" onChange={(e) => setMasterPlanFile(e.target.files[0])} className='border border-rose-300 p-3 rounded-lg' />
+                    <p>Amenities</p>
+                    <div className='flex gap-4'>
+                        <label className='flex items-center gap-2'>
+                            <input type="checkbox" id="gym" onChange={handleChange} checked={formData.amenities.gym} className='w-4 h-4' />
+                            Gym
+                        </label>
+                        <label className='flex items-center gap-2'>
+                            <input type="checkbox" id="pool" onChange={handleChange} checked={formData.amenities.pool} className='w-4 h-4' />
+                            Pool
+                        </label>
+                        <label className='flex items-center gap-2'>
+                            <input type="checkbox" id="park" onChange={handleChange} checked={formData.amenities.park} className='w-4 h-4' />
+                            Park
+                        </label>
+                        {/* Add more amenities as needed */}
+                    </div>
                 </div>
                 <div className='flex flex-col gap-4 flex-1'>
                     <p>Bedrooms</p>
